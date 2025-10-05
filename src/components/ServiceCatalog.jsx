@@ -1,3 +1,4 @@
+//eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import { useState } from "react";
 import { Search, Filter, Star, Code, Palette, Smartphone, Database, Megaphone, BarChart, ArrowLeft } from "lucide-react";

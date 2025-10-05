@@ -6,7 +6,7 @@ import { Card } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { ImageWithFallback } from "./fullback/ImageWithFallback";
+import { ImageWithFallback } from "./images/ImageWithFallback";
 
 export function FreelancerProfile({ onNavigate, freelancer }) {
   const profile = freelancer || {
