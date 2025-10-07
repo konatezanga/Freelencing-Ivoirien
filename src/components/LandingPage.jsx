@@ -104,7 +104,7 @@ export function LandingPage({ onNavigate }) {
           </div>*/}
 
           {/* ====== Boutons Auth + Menu burger ====== */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ml-auto">
             {/* Boutons desktop */}
             <div className="hidden md:flex gap-3">
               <Button
@@ -204,7 +204,7 @@ export function LandingPage({ onNavigate }) {
             <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4">
               <Button
                 size="lg"
-                onClick={() => onNavigate("catalog")}
+                onClick={() => onNavigate("auth")}
                 className="w-full sm:w-auto justify-center bg-orange-500 text-black hover:bg-orange-600 rounded-full font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 <Search className="w-5 h-5 mr-2" />
@@ -282,10 +282,12 @@ export function LandingPage({ onNavigate }) {
             FreelanceIT vous connecte avec les bonnes personnes.
           </p>
           <div className="flex justify-center gap-4 mb-8">
-            <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg">
+            <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg" 
+              onClick={() => onNavigate("auth")}>
               Devenir Freelancer
             </button>
-            <button className="bg-white text-green-600 font-bold py-2 px-6 rounded-lg hover:bg-green-100">
+            <button className="bg-white text-green-600 font-bold py-2 px-6 rounded-lg hover:bg-green-100"
+              onClick={() => onNavigate("auth")}>
               Trouver un Talent
             </button>
           </div>
@@ -304,7 +306,7 @@ export function LandingPage({ onNavigate }) {
             </div>
           </div>
           <p className="text-sm text-white mt-10">
-            © 2025 FreelanceIT. Tous droits réservés.
+            © 2025 FreelanceIT développé par @KonateZanga. Tous droits réservés.
           </p>
         </div>
       </footer>

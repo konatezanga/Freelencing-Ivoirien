@@ -46,7 +46,7 @@ export function AuthForm({ onNavigate }) {
           </div>
 
           {/* ===== Cartes Choix ===== */}
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* === CLIENT === */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
