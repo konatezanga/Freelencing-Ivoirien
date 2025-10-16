@@ -8,9 +8,53 @@ import { Card } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Textarea } from "./ui/textarea";
+import { Label } from "./ui/label";
 
 export function ServiceCatalog({ onNavigate }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isPublishOpen, setPublishOpen] = useState(false);
+  const [form, setForm] = useState({ title: "", description: "", budget: "", deadline: "" });
+  const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const today = new Date().toISOString().split("T")[0];
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+    if (errors[name]) setErrors((err) => ({ ...err, [name]: undefined }));
+  };
+
+  const validate = () => {
+    const errs = {};
+    if (!form.title.trim()) errs.title = "Titre requis";
+    if (!form.description.trim()) errs.description = "Description requise";
+    if (!form.budget || Number(form.budget) <= 0) errs.budget = "Budget valide requis";
+    if (!form.deadline) errs.deadline = "Délai requis";
+    return errs;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
+    setSubmitting(true);
+    try {
+      // Simulation d'un appel API
+      await new Promise((res) => setTimeout(res, 800));
+      console.log("Mission publiée:", form);
+      // Ferme le modal et réinitialise le formulaire
+      setPublishOpen(false);
+      setForm({ title: "", description: "", budget: "", deadline: "" });
+      setErrors({});
+    } finally {
+      setSubmitting(false);
+    }
+  };
   //const [selectedCategory, setSelectedCategory] = useState(null);
 
   /*const freelancers = [
@@ -113,9 +157,106 @@ export function ServiceCatalog({ onNavigate }) {
             <Button className="text-red-600 bg-gray-700 hover:bg-gray-950 w-full sm:w-auto order-2 sm:order-1" variant="ghost" onClick={() => onNavigate("landing")}>
               <ArrowLeft className="w-4 h-4 mr-2" /> Se déconnecter
             </Button>
-            <Button className="bg-gradient-to-r from-orange-500 to-green-600 text-white w-full sm:w-auto sm:ml-auto order-1 sm:order-2">
-              <Plus className="w-4 h-4 mr-2" /> Publier une mission
-            </Button>
+            <Dialog open={isPublishOpen} onOpenChange={setPublishOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-gradient-to-r from-orange-500 to-green-600 text-white w-full sm:w-auto sm:ml-auto order-1 sm:order-2">
+                  <Plus className="w-4 h-4 mr-2" /> Publier une mission
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-xl bg-white">
+                <DialogHeader>
+                  <DialogTitle>Publier une mission</DialogTitle>
+                  <DialogDescription>
+                    Permettre au client de publier une mission avec budget et délai.
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4 overflow-y-auto max-h-[70vh] pr-2">
+                  <div className="grid gap-2">
+                    <Label htmlFor="title">Titre</Label>
+                    <Input
+                      id="title"
+                      name="title"
+                      placeholder="Ex. Développer une landing page"
+                      value={form.title}
+                      onChange={handleChange}
+                      aria-invalid={!!errors.title}
+                    />
+                    {errors.title && (
+                      <p className="text-sm text-red-600">{errors.title}</p>
+                    )}
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      name="description"
+                      rows={5}
+                      placeholder="Décrivez la mission, livrables, compétences requises..."
+                      value={form.description}
+                      onChange={handleChange}
+                      aria-invalid={!!errors.description}
+                    />
+                    {errors.description && (
+                      <p className="text-sm text-red-600">{errors.description}</p>
+                    )}
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="budget">Budget (FCFA)</Label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">FCFA</span>
+                        <Input
+                          id="budget"
+                          name="budget"
+                          type="number"
+                          min="0"
+                          step="1000"
+                          className="pl-14"
+                          placeholder="ex. 200000"
+                          value={form.budget}
+                          onChange={handleChange}
+                          aria-invalid={!!errors.budget}
+                        />
+                      </div>
+                      {errors.budget && (
+                        <p className="text-sm text-red-600">{errors.budget}</p>
+                      )}
+                    </div>
+
+                    <div className="grid gap-2">
+                      <Label htmlFor="deadline">Délai</Label>
+                      <Input
+                        id="deadline"
+                        name="deadline"
+                        type="date"
+                        min={today}
+                        value={form.deadline}
+                        onChange={handleChange}
+                        aria-invalid={!!errors.deadline}
+                      />
+                      {errors.deadline && (
+                        <p className="text-sm text-red-600">{errors.deadline}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <DialogFooter>
+                    <Button type="button" variant="outline" onClick={() => setPublishOpen(false)}>
+                      Annuler
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="bg-gradient-to-r from-orange-500 to-green-600 text-white"
+                      disabled={submitting}
+                    >
+                      {submitting ? "Publication..." : "Publier"}
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </header>
