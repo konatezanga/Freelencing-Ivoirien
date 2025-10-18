@@ -210,12 +210,12 @@ export function MessagingView({ onNavigate }) {
               </div>
 
               {/* Barre d'envoi - FIXE */}
-              <div className="p-4 border-t border-gray-200 bg-white flex-shrink-0">
-                <div className="flex gap-2 items-center">
+              <div className="p-4 border-t border-gray-200 bg-white sticky top-0 bottom-0 left-0 right-0">
+                <div className="flex gap-2 items-center max-w-4xl mx-auto">
                   <Button 
                     variant="outline" 
                     size="icon" 
-                    className="rounded-full hover:bg-gray-100 border-gray-300 text-gray-600"
+                    className="rounded-full hover:bg-gray-100 border-gray-300 text-gray-600 flex-shrink-0"
                   >
                     <Paperclip className="w-5 h-5" />
                   </Button>
@@ -224,13 +224,13 @@ export function MessagingView({ onNavigate }) {
                     value={message} 
                     onChange={(e) => setMessage(e.target.value)} 
                     onKeyDown={(e) => e.key === "Enter" && handleSend()} 
-                    className="rounded-full bg-gray-100 border-0 focus-visible:ring-1 focus-visible:ring-green-500 flex-1"
+                    className="rounded-full bg-gray-100 border-0 focus-visible:ring-1 focus-visible:ring-green-500 flex-1 min-w-0"
                   />
                   <Button 
                     size="icon" 
                     onClick={handleSend} 
                     disabled={!message.trim()}
-                    className="rounded-full bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="rounded-full bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed flex-shrink-0"
                   >
                     <Send className="w-5 h-5 text-white" />
                   </Button>
