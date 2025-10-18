@@ -144,7 +144,7 @@ export function ServiceCatalog({ onNavigate }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-black/10 shadow-sm sticky top-0 supports-[top:env(safe-area-inset-top)]:top-[env(safe-area-inset-top)] z-50 relative">
+      <header className="bg-white/80 backdrop-blur-md border-b border-black/10 shadow-sm top-0 supports-[top:env(safe-area-inset-top)]:top-[env(safe-area-inset-top)] z-50 relative">
         {/* User icon top-right */}
         <button
           aria-label="Profil utilisateur"

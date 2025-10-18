@@ -1,6 +1,7 @@
 //eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import { useState } from "react";
+import { Camera, X } from "lucide-react";
 import {
   Home,
   Briefcase,
@@ -22,6 +23,8 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import PropTypes from "prop-types";
+import { MissionsView } from "./MissionsView";
+
 
 const menuItems = [
   { icon: Home, label: "Accueil", value: "home" },
@@ -37,33 +40,6 @@ const stats = [
     label: "Missions actives",
     value: "3",
     color: "text-orange-500",
-  },
-];
-
-const activeMissions = [
-  {
-    id: 1,
-    title: "Développement site e-commerce",
-    client: "Diabaté Moussa",
-    progress: 65,
-    deadline: "Dans 5 jours",
-    budget: "500,000 FCFA",
-  },
-  {
-    id: 2,
-    title: "Application mobile iOS",
-    client: "Traoré Aminata",
-    progress: 30,
-    deadline: "Dans 12 jours",
-    budget: "750,000 FCFA",
-  },
-  {
-    id: 3,
-    title: "Refonte design dashboard",
-    client: "Koné Sékou",
-    progress: 85,
-    deadline: "Dans 3 jours",
-    budget: "300,000 FCFA",
   },
 ];
 
@@ -83,6 +59,7 @@ function Divider({ label }) {
 }
 
 export function FreelancerDashboard({ onNavigate }) {
+  const [newSkill, setNewSkill] = useState('');
   const [activeMenu, setActiveMenu] = useState("home");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -95,14 +72,14 @@ export function FreelancerDashboard({ onNavigate }) {
         {/* Overlay mobile */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            className="fixed inset-0 z-[55] bg-black/40 md:hidden"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
 
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-border flex flex-col transform transition-transform duration-300 md:relative md:translate-x-0 md:flex md:w-64 ${
+          className={`fixed inset-y-0 left-0 z-[60] w-72 bg-white border-r border-border flex flex-col overflow-y-auto transform transition-transform duration-300 md:fixed md:translate-x-0 md:flex md:w-64 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -141,7 +118,7 @@ export function FreelancerDashboard({ onNavigate }) {
           <Divider />
 
           {/* Menu latéral */}
-          <nav className="flex-1 p-4 overflow-y-auto">
+          <nav className="flex-1 p-4">
             <ul className="space-y-1">
               {menuItems.map((item) => (
                 <li key={item.value}>
@@ -178,16 +155,16 @@ export function FreelancerDashboard({ onNavigate }) {
         </aside>
 
         {/* Contenu principal */}
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto md:ml-64">
           {/* Header fixé */}
-          <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
-            <div className="px-4 sm:px-6 md:px-8 py-3 flex items-center justify-between">
+          <header className="fixed top-0 right-0 left-0 md:left-64 z-50 bg-white shadow-sm">
+            <div className="px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Button
                   variant="outline"
                   size="icon"
                   className={`rounded-full md:hidden ${btnInteractive}`}
-                  onClick={() => setIsSidebarOpen(true)}
+                  onClick={() => setIsSidebarOpen((prev) => !prev)}
                 >
                   <Menu className="w-5 h-5" />
                 </Button>
@@ -196,8 +173,8 @@ export function FreelancerDashboard({ onNavigate }) {
                     {menuItems.find((m) => m.value === activeMenu)?.label ||
                       "Accueil"}
                   </h1>
-                  <p className="text-sm text-muted-foreground">
-                    Bienvenue, Kouassi 👋
+                  <p className="text-sm z-50 text-muted-foreground">
+                    Bienvenue, Kouassi !
                   </p>
                 </div>
               </div>
@@ -215,7 +192,9 @@ export function FreelancerDashboard({ onNavigate }) {
           </header>
 
           {/* Contenu dynamique */}
-          <div className="p-4 sm:p-6 md:p-8">
+          <div className="p-4 sm:p-6 md:p-8 pt-20 md:pt-24">
+
+            {/* Home Tab */}
             {activeMenu === "home" && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -269,135 +248,151 @@ export function FreelancerDashboard({ onNavigate }) {
                 </div>
               </motion.div>
             )}
+
+            {/* Missions Tab */}
+            {activeMenu === "missions" && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                <MissionsView />
+              </motion.div>
+            )}
+
             {/* Profile Tab */}
-                        {activeMenu === "profile" && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="max-w-2xl"
-                          >
-                            <Card className="p-6 mb-6">
-                              <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
-                                <Avatar className="w-24 h-24 border-4 border-primary/20">
-                                  <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Amara" alt="Profile" />
-                                  <AvatarFallback>KA</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                  <h2 className="text-lg sm:text-xl font-semibold mb-1">Kouassi Amara</h2>
-                                  <p className="text-muted-foreground mb-2">Développeur Full Stack</p>
-                                  <Button size="sm" variant="outline" className={`rounded-full ${btnInteractive}`}>
-                                    Changer la photo
-                                  </Button>
-                                </div>
-                              </div>
-            
-                              <div className="space-y-4">
-                                <div>
-                                  <Label>Bio</Label>
-                                  <Textarea
-                                    placeholder="Parlez-nous de vous..."
-                                    defaultValue="Développeur passionné avec plus de 5 ans d'expérience dans le développement d'applications web modernes."
-                                    className="mt-2"
-                                    rows={4}
-                                  />
-                                </div>
-            
-                                <div className="grid md:grid-cols-2 gap-4">
-                                  <div>
-                                    <Label>Tarif horaire (FCFA)</Label>
-                                    <Input type="number" defaultValue="15000" className="mt-2" />
-                                  </div>
-                                  <div>
-                                    <Label>Tarif journalier (FCFA)</Label>
-                                    <Input type="number" defaultValue="100000" className="mt-2" />
-                                  </div>
-                                </div>
-            
-                                <div>
-                                  <Label>Établissement / Alumni</Label>
-                                  <Input defaultValue="INPHB - Institut National Polytechnique Houphouët-Boigny" className="mt-2" />
-                                </div>
-            
-                                <div>
-                                  <Label>Compétences</Label>
-                                  <div className="flex flex-wrap gap-2 mt-2 mb-2">
-                                    {["React", "Node.js", "TypeScript", "MongoDB", "AWS", "Docker"].map((skill) => (
-                                      <Badge key={skill} variant="secondary">
-                                        {skill}
-                                      </Badge>
-                                    ))}
-                                  </div>
-                                  <Button variant="outline" size="sm" className={`rounded-full ${btnInteractive}`}>
-                                    Ajouter une compétence
-                                  </Button>
-                                </div>
-            
-                                <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                                  <Button className={`bg-gradient-to-r from-primary to-secondary rounded-full font-medium ${btnInteractive}`}>
-                                    Sauvegarder
-                                  </Button>
-                                  <Button variant="outline" className={`rounded-full ${btnInteractive}`}>
-                                    Annuler
-                                  </Button>
-                                </div>
-                              </div>
-                            </Card>
-                          </motion.div>
-                        )}
-            
-                        {/* Missions Tab */}
-                        {activeMenu === "missions" && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                          >
-                            <Tabs defaultValue="active">
-                              <TabsList className="bg-white rounded-full p-1 mb-6">
-                                <TabsTrigger value="active" className="rounded-full">Actives (3)</TabsTrigger>
-                                <TabsTrigger value="pending" className="rounded-full">En attente (5)</TabsTrigger>
-                                <TabsTrigger value="completed" className="rounded-full">Terminées (12)</TabsTrigger>
-                              </TabsList>
-            
-                              <TabsContent value="active">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                  {activeMissions.map((mission) => (
-                                    <Card key={mission.id} className="p-6 hover:shadow-lg transition-all">
-                                      <h3 className="mb-2 font-medium">{mission.title}</h3>
-                                      <p className="text-sm text-muted-foreground mb-4">{mission.client}</p>
-                                      
-                                      <div className="mb-4">
-                                        <div className="flex items-center justify-between text-sm mb-2">
-                                          <span className="text-muted-foreground">Progression</span>
-                                          <span className="text-primary font-medium">{mission.progress}%</span>
-                                        </div>
-                                        <div className="h-2 bg-muted rounded-full overflow-hidden">
-                                          <div
-                                            className="h-full bg-gradient-to-r from-primary to-secondary"
-                                            style={{ width: `${mission.progress}%` }}
-                                          />
-                                        </div>
-                                      </div>
-            
-                                      {/* Decorative separator instead of border */}
-                                      <div className="h-px w-full bg-gradient-to-r from-transparent via-orange-400/40 to-transparent mb-4" />
-            
-                                      <div className="flex items-center justify-between pt-0">
-                                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                          <Clock className="w-4 h-4" />
-                                          <span>{mission.deadline}</span>
-                                        </div>
-                                        <span className="text-primary font-medium">{mission.budget}</span>
-                                      </div>
-                                    </Card>
-                                  ))}
-                                </div>
-                              </TabsContent>
-                            </Tabs>
-                          </motion.div>
-                        )}
-            
-                        {/* Messages Tab */}
-                        {activeMenu === "messages" && (
+            {activeMenu === "profile" && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="max-w-2xl"
+              >
+                <Card className="p-6 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
+                    <div className="relative">
+                      <Avatar className="w-24 h-24 border-4 border-primary/20">
+                        <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Amara" alt="Profile" />
+                        <AvatarFallback>KA</AvatarFallback>
+                      </Avatar>
+                      <input
+                        type="file"
+                        id="photo-upload"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          // Gérer le changement de photo ici
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            console.log("Nouvelle photo sélectionnée:", file.name);
+                            // Ici on peut uploader la photo ou mettre à jour l'état
+                          }
+                        }}
+                      />
+                      
+                    </div>
+                    <div>
+                      <h2 className="text-lg sm:text-xl font-semibold mb-1">Kouassi Amara</h2>
+                      <p className="text-muted-foreground mb-2">Développeur Full Stack</p>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className={`rounded-full ${btnInteractive}`}
+                        onClick={() => document.getElementById('photo-upload')?.click()}
+                      >
+                        Changer la photo
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Bio</Label>
+                      <Textarea
+                        placeholder="Parlez-nous de vous..."
+                        defaultValue="Développeur passionné avec plus de 5 ans d'expérience dans le développement d'applications web modernes."
+                        className="mt-2"
+                        rows={4}
+                      />
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label>Tarif horaire (FCFA)</Label>
+                        <Input type="number" defaultValue="15000" className="mt-2" />
+                      </div>
+                      <div>
+                        <Label>Tarif journalier (FCFA)</Label>
+                        <Input type="number" defaultValue="100000" className="mt-2" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label>Établissement / Alumni</Label>
+                      <Input defaultValue="INPHB - Institut National Polytechnique Houphouët-Boigny" className="mt-2" />
+                    </div>
+
+                    <div>
+                      <Label>Compétences</Label>
+                      <div className="flex flex-wrap gap-2 mt-2 mb-3">
+                        {["React", "Node.js", "TypeScript", "MongoDB", "AWS", "Docker"].map((skill) => (
+                          <Badge key={skill} variant="secondary" className="flex items-center gap-1">
+                            {skill}
+                            <button 
+                              className="text-muted-foreground hover:text-destructive ml-1"
+                              onClick={() => {
+                                // Logique pour supprimer la compétence
+                                console.log("Supprimer compétence:", skill);
+                              }}
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
+                      
+                      {/* Input pour ajouter une compétence */}
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Ajouter une compétence..."
+                          value={newSkill}
+                          onChange={(e) => setNewSkill(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && newSkill.trim()) {
+                              // Logique pour ajouter la compétence
+                              console.log("Nouvelle compétence:", newSkill.trim());
+                              setNewSkill('');
+                            }
+                          }}
+                          className="flex-1"
+                        />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className={`rounded-full ${btnInteractive}`}
+                          onClick={() => {
+                            if (newSkill.trim()) {
+                              // Logique pour ajouter la compétence
+                              console.log("Nouvelle compétence:", newSkill.trim());
+                              setNewSkill('');
+                            }
+                          }}
+                        >
+                          Ajouter
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                      <Button className={`bg-gradient-to-r rounded-full font-medium ${btnInteractive}`}>
+                        Sauvegarder
+                      </Button>
+                      <Button variant="outline" className={`rounded-full ${btnInteractive}`}>
+                        Annuler
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            )}
+        
+            {/* Messages Tab */}
+            {activeMenu === "messages" && (
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -410,16 +405,16 @@ export function FreelancerDashboard({ onNavigate }) {
                               </p>
                               <Button
                                 onClick={() => onNavigate("messages")}
-                                className={`bg-gradient-to-r from-primary to-secondary rounded-full font-medium ${btnInteractive}`}
+                                className={`bg-gradient-to-r from-primary to-secondary rounded-full font-medium ${btnInteractive} bg-amber-600`}
                               >
                                 Ouvrir la messagerie
                               </Button>
                             </Card>
                           </motion.div>
-                        )}
+            )}
             
-                        {/* Settings Tab */}
-                        {activeMenu === "settings" && (
+            {/* Settings Tab */}
+            {activeMenu === "settings" && (
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -436,7 +431,7 @@ export function FreelancerDashboard({ onNavigate }) {
                                   <Label>Téléphone</Label>
                                   <Input type="tel" defaultValue="+225 01 02 03 04 05" className="mt-2" />
                                 </div>
-                                <Button className={`bg-gradient-to-r from-primary to-secondary rounded-full font-medium ${btnInteractive}`}>
+                                <Button className={`bg-gradient-to-r rounded-full font-medium ${btnInteractive}`}>
                                   Sauvegarder
                                 </Button>
                               </div>
@@ -463,7 +458,8 @@ export function FreelancerDashboard({ onNavigate }) {
                               </div>
                             </Card>
                           </motion.div>
-                        )}
+            )}
+
           </div>
         </main>
       </div>
