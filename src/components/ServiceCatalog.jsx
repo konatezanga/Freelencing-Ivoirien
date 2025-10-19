@@ -208,9 +208,9 @@ export function ServiceCatalog({ onNavigate }) {
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </Button>
 
-              <Button variant="ghost" onClick={() => onNavigate("landing")} className="hidden sm:flex">
+              <Button variant="ghost" onClick={() => onNavigate("landing")} className="flex bg-orange-100 text-orange-600 hover:bg-orange-200">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Déconnexion
+                <span className="hidden sm:inline">Déconnexion</span>
               </Button>
 
               <h1 className="text-xl font-bold">
