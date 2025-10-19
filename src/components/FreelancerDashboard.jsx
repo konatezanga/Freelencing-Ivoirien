@@ -18,7 +18,6 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
@@ -233,12 +232,14 @@ export function FreelancerDashboard({ onNavigate }) {
                   <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 mb-2">
                     <Button
                       variant="link"
+                      onClick={() => setActiveMenu("missions")}
                       className={`text-primary font-medium hover:underline underline-offset-4 ${btnInteractive}`}
                     >
                       Voir missions actives
                     </Button>
                     <Button
                       variant="link"
+                      onClick={() => setActiveMenu("messages")}
                       className={`text-primary font-medium hover:underline underline-offset-4 ${btnInteractive}`}
                     >
                       Voir messages reçus

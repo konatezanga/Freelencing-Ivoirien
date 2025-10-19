@@ -13,15 +13,15 @@ const conversations = [
   { id: 3, name: "Yao Christophe", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Yao", lastMessage: "D'accord, je vous envoie le devis", time: "Hier", unread: 0, online: false },
 ];
 
-export function MessagingView({ onNavigate }) {
+export function ClientMessagingView({ onNavigate }) {
   const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
-    { id: 1, sender: "other", text: "Bonjour ! J'ai bien reçu votre proposition de mission.", time: "10:00" },
-    { id: 2, sender: "me", text: "Excellent ! Quand pourriez-vous commencer ?", time: "10:15" },
-    { id: 3, sender: "other", text: "Je suis disponible dès demain. Le délai de 2 semaines vous convient ?", time: "10:25" },
-    { id: 4, sender: "me", text: "Parfait pour moi ! Je vous envoie les détails du projet.", time: "10:28" },
-    { id: 5, sender: "other", text: "Parfait, je commence demain !", time: "10:30" },
+    { id: 1, sender: "other", text: "Bonjour ! J'ai vu votre mission, elle m'intéresse beaucoup.", time: "10:00" },
+    { id: 2, sender: "me", text: "Super ! Pouvez-vous me parler de votre expérience ?", time: "10:15" },
+    { id: 3, sender: "other", text: "Bien sûr ! J'ai 5 ans d'expérience en développement React et Node.js.", time: "10:25" },
+    { id: 4, sender: "me", text: "Parfait ! Je vous envoie les détails complémentaires.", time: "10:28" },
+    { id: 5, sender: "other", text: "Excellent, j'attends vos informations avec impatience !", time: "10:30" },
   ]);
 
   const [showContacts, setShowContacts] = useState(false);
@@ -55,7 +55,7 @@ export function MessagingView({ onNavigate }) {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Button variant="ghost" onClick={() => onNavigate("dashboard")} className="flex items-center gap-2">
+            <Button variant="ghost" onClick={() => onNavigate("catalog")} className="flex items-center gap-2">
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Retour</span>
             </Button>
