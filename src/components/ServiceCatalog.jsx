@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
+import { LogOut } from 'lucide-react';
 
 export function ServiceCatalog({ onNavigate }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -209,7 +210,7 @@ export function ServiceCatalog({ onNavigate }) {
               </Button>
 
               <Button variant="ghost" onClick={() => onNavigate("landing")} className="flex bg-orange-100 text-orange-600 hover:bg-orange-200">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <LogOut className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Déconnexion</span>
               </Button>
 
